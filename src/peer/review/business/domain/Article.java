@@ -33,7 +33,8 @@ public class Article {
 		this.reviews.put(reviewer, null);
 	}
 	
-	public void updateReview(Researcher reviewer, int score) throws NullPointerException, IllegalValueException {
+	public void updateReview(Researcher reviewer, int score) throws NullPointerException, 
+																	IllegalValueException {
 		if (!this.reviews.containsKey(reviewer)) {
 			throw new NullPointerException("exception.reviewer.notFound");
 		} else if (!isValidScore(score)) {
@@ -48,7 +49,6 @@ public class Article {
 				validReviewers.add(candidate);
 			}
 		}
-		
 		return validReviewers;
 	}
 	
