@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import peer.review.business.exception.IllegalValueException;
 
-public class Article {
-	private int id;
+public class Article implements Comparable<Article> {
+	private Integer id;
 	private String title;
 	private Researcher author;
 	private Map<Researcher, Integer> reviews;
@@ -19,6 +19,10 @@ public class Article {
 		this.author = author;
 		this.conference = conference;
 		reviews = new  HashMap<Researcher, Integer>();
+	}
+	
+	public Integer getId() {
+		return id;
 	}
 
 	public String getTitle() {
@@ -66,4 +70,23 @@ public class Article {
 	private boolean isValidScore(int score) {
 		return (score >= -3 && score <= 3); 
 	}
+
+	public boolean accepted() throws NullPointerException {
+		ArrayList<Integer> scores = (ArrayList<Integer>) reviews.values();
+		int sum = 0;
+		float average;
+		for (Integer score : scores) {
+			if (score == null) {
+				throw new NullPointerException("exception.score.notFound");
+			}
+			sum += score;
+		}
+		average = sum / scores.size();
+		return average >= 0;
+	}
+	
+	@Override
+    public int compareTo(Article article) {
+        return this.getId().compareTo(article.getId());
+    }
 }
