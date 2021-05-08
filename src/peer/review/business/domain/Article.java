@@ -61,7 +61,7 @@ public class Article implements Comparable<Article> {
 	public boolean isValidReviewer(Researcher reviewer) {
 		return 
 		    !this.author.equals(reviewer) && 
-		    !this.author.isSameAffiliation(reviewer)) && 
+		    !this.author.isSameAffiliation(reviewer) && 
 		    !this.reviews.containsKey(reviewer) &&
 			reviewer.isTopicOfInterest(this.relatedTopic);
 	}
@@ -71,6 +71,9 @@ public class Article implements Comparable<Article> {
 	}
 
 	public boolean accepted() throws NullPointerException {
+		if (reviews.isEmpty()) {
+			throw new NullPointerException("exception.reviews.empty");
+		}
 		ArrayList<Integer> scores = (ArrayList<Integer>) reviews.values();
 		int sum = 0;
 		float average;
