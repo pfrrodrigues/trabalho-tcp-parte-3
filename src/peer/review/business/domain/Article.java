@@ -10,13 +10,15 @@ public class Article implements Comparable<Article> {
 	private Integer id;
 	private String title;
 	private Researcher author;
+	private Topic relatedTopic;
 	private Map<Researcher, Integer> reviews;
 	private Conference conference;
 	
-	public Article(int id, String title, Researcher author, Conference conference) {
+	public Article(int id, String title, Researcher author, Topic relatedTopic, Conference conference) {
 		this.id = id;
 		this.title = title;
 		this.author = author;
+		this.relatedTopic = relatedTopic;
 		this.conference = conference;
 		reviews = new  HashMap<Researcher, Integer>();
 	}
@@ -60,7 +62,8 @@ public class Article implements Comparable<Article> {
 		return 
 		    !this.author.equals(reviewer) && 
 		    !this.author.isSameAffiliation(reviewer)) && 
-		    !this.reviews.containsKey(reviewer)
+		    !this.reviews.containsKey(reviewer) &&
+			reviewer.isTopicOfInterest(this.relatedTopic);
 	}
 	
 	private boolean isValidScore(int score) {
