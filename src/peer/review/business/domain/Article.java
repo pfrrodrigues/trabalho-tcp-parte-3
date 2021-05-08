@@ -57,14 +57,10 @@ public class Article implements Comparable<Article> {
 	}
 	
 	public boolean isValidReviewer(Researcher reviewer) {
-		if (this.author.equals(reviewer)) {
-			return false;
-		} else if (this.author.isSameAffiliation(reviewer)) {
-			return false;
-		} else if (this.reviews.containsKey(reviewer)) {
-			return false;
-		}
-		return true;
+		return 
+		    !this.author.equals(reviewer) && 
+		    !this.author.isSameAffiliation(reviewer)) && 
+		    !this.reviews.containsKey(reviewer)
 	}
 	
 	private boolean isValidScore(int score) {
