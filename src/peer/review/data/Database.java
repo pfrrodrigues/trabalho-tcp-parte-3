@@ -125,33 +125,33 @@ public class Database {
         save(a11);
 
         // Reviews
-        a1.addReviewer(natasha);
+        a1.getConference().allocateReview(a1, natasha);
         a1.updateReview(natasha, 2);
-        a1.addReviewer(carlos);
+        a1.getConference().allocateReview(a1, carlos);
         
-        a2.addReviewer(suzana);
+        a2.getConference().allocateReview(a2, suzana);
         a2.updateReview(suzana, 2);
-        a2.addReviewer(ana);
+        a2.getConference().allocateReview(a2, ana);
         a2.updateReview(ana, 3);
 
-        a3.addReviewer(joana);
+        a3.getConference().allocateReview(a3, joana);
         a3.updateReview(joana, -1);
-        a3.addReviewer(beatriz);
+        a3.getConference().allocateReview(a3, beatriz);
         a3.updateReview(beatriz, 1);
 
-        a4.addReviewer(joao);
+        a4.getConference().allocateReview(a4, joao);
         a4.updateReview(joao, 1);
-        a4.addReviewer(manoel);
+        a4.getConference().allocateReview(a4, manoel);
         a4.updateReview(manoel, 0);
 
-        a5.addReviewer(joana);
+        a5.getConference().allocateReview(a5, joana);
         a5.updateReview(joana, -3);
-        a5.addReviewer(miguel);
+        a5.getConference().allocateReview(a5, miguel);
         a5.updateReview(miguel, -3);
 
-        a6.addReviewer(manoel);
+        a6.getConference().allocateReview(a6, manoel);
         a6.updateReview(manoel, -1);
-        a6.addReviewer(beatriz);
+        a6.getConference().allocateReview(a6, beatriz);
         a6.updateReview(beatriz, 0);
     }
     
