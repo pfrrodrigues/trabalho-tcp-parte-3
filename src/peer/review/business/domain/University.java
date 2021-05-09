@@ -1,9 +1,9 @@
 package peer.review.business.domain;
 
-public class Topic {
+public class University {
 	private String name;
 
-	public Topic(String name) {
+	public University(String name) {
 		this.name = name;
 	}
 	
@@ -19,7 +19,7 @@ public class Topic {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Topic other = (Topic) obj;
+		University other = (University) obj;
 		if (name == null) {
 			if (other.name != null)
 				return false;
