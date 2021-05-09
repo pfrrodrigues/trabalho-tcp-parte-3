@@ -24,6 +24,10 @@ public class Conference {
 		return articles;
 	}
 	
+	public String getAcronym() {
+		return acronym;
+	}
+	
 	public void allocate() {
 		Collections.sort(articles);
 		for (Article article : articles) {
