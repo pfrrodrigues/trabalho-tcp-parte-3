@@ -22,17 +22,22 @@ public class Article implements Comparable<Article> {
 		this.conference = conference;
 		reviews = new  HashMap<Researcher, Integer>();
 	}
+
 	
 	public Integer getId() {
 		return id;
 	}
-
+	
 	public String getTitle() {
 		return title;
 	}
-
+	
 	public Map<Researcher, Integer> getReviews() {
 		return reviews;
+	}
+
+	public Conference getConference() {
+		return this.conference;
 	}
 	
 	public void addReviewer(Researcher reviewer) {
