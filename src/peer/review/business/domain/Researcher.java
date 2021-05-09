@@ -23,10 +23,6 @@ public class Researcher {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public University getAffiliation() {
 		return affiliation;
 	}
