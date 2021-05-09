@@ -11,17 +11,38 @@ public class Conference {
 	private Map<Researcher, Integer> committeeReviewAllocation;
 	private List<Article> articles;
 	
-	public Conference(String acronym, List<Researcher> committeeMembers, List<Article> articles) {
+	public Conference(String acronym, List<Researcher> committeeMembers) {
 		this.acronym = acronym;
-		this.committeeReviewAllocation = new HashMap<Researcher, Integer>();
+		this.committeeReviewAllocation = new HashMap<>();
+		this.articles = new ArrayList<>();
 		for (Researcher researcher : committeeMembers) {
 			this.committeeReviewAllocation.put(researcher, 0);
 		}
-		this.articles = articles;
 	}
 
 	public List<Article> getArticles() {
 		return articles;
+	}
+	
+	public String getAcronym() {
+		return this.acronym;
+	}
+	
+	public void addArticle(Article article) {
+		if (!articles.contains(article)) {
+			articles.add(article);
+		}
+	}
+	
+	public void allocateReview(Article article, Researcher reviewer) throws NullPointerException {
+		if (!articles.contains(article)) {
+			throw new NullPointerException("exception.article.notFound");			
+		} else if (!committeeReviewAllocation.containsKey(reviewer)) {
+			throw new NullPointerException("exception.reviewer.notFound");			
+		}
+		
+		article.addReviewer(reviewer);
+		committeeReviewAllocation.put(reviewer, committeeReviewAllocation.get(reviewer) + 1);
 	}
 	
 	public void allocate() {
@@ -31,8 +52,7 @@ public class Conference {
 						new ArrayList<Researcher>(committeeReviewAllocation.keySet())
 					);
 			Researcher reviewer = getFirstReviewer(validReviewers);
-			article.addReviewer(reviewer);
-			committeeReviewAllocation.put(reviewer, committeeReviewAllocation.get(reviewer) + 1);
+			this.allocateReview(article, reviewer);
 		}
 	}
 	
