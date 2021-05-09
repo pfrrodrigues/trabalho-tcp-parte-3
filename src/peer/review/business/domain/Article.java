@@ -46,6 +46,7 @@ public class Article implements Comparable<Article> {
 		} else if (!isValidScore(score)) {
 			throw new IllegalValueException("exception.score.invalid");
 		}
+		this.reviews.put(reviewer, score);
 	}
 	
 	public List<Researcher> validateReviewers(List<Researcher> reviewerCandidates) {
