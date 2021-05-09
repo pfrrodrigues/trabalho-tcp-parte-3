@@ -52,6 +52,15 @@ public class Conference {
 		}
 		return firstReviewer;
 	}
+
+	public boolean isAllocated() {
+		List<Integer> valuesAllocated = (ArrayList<Integer>) this.committeeReviewAllocation.values();
+		for (Integer value : valuesAllocated) {
+			if (value != null) 
+				return true;
+		}
+		return false;
+	}
 	
 	public List<Article> getAcceptedArticles() throws NullPointerException {
 		List<Article> acceptedArticles = new ArrayList<Article>();
