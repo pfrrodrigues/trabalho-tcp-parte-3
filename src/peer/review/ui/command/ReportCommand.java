@@ -25,20 +25,20 @@ public class ReportCommand extends Command {
 	}
 	
 	private Integer chooseConferenceIndex() {
-		List<Conference> conferences = this.service.getAllConferences();
+		//List<Conference> conferences = this.service.getAllConferences();
 		System.out.println();
 		Integer indexConference = null;
-		
+		/*
 		do {
 			indexConference = UIUtils.INSTANCE.readInteger("index.conference");
 		} while (indexConference < 0 || indexConference > conferences.size() - 1);
-		
-		return indexConference;
+		*/
+		return indexConference; 
 	}
 	
 	private void printConferences() {
 		StringBuffer sb = new StringBuffer();
-		List<Conference> conferences = this.service.getAllConferences();
+	/*	List<Conference> conferences = this.service.getAllConferences();
 		
 		sb.append(getTextManager().getText("index")).append("\t\t\t");
 		sb.append(getTextManager().getText("tag")).append("\t\t\t\n");
@@ -48,7 +48,7 @@ public class ReportCommand extends Command {
 			sb.append(conferences.indexOf(conference) + "\t\t");
 			sb.append(conference.getAcronym() + "\n"); 
 		}
-		System.out.println(sb);
+		System.out.println(sb); */
 	}
 	
 	private void separateArticles() {

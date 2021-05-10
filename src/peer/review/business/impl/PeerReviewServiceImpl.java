@@ -1,6 +1,7 @@
 package peer.review.business.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import peer.review.business.PeerReviewService;
 import peer.review.business.domain.Conference;
@@ -14,7 +15,7 @@ public class PeerReviewServiceImpl implements PeerReviewService {
 		this.database = database;
 	}
 	
-	public List<Conference> getAllConferences() {
+	public Map<String, Conference> getAllConferences() {
 		return this.database.getAllConferences();
 	}
 	
