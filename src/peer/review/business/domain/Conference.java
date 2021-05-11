@@ -77,7 +77,7 @@ public class Conference {
 		List<Integer> valuesAllocated = (ArrayList<Integer>) this.committeeReviewAllocation.values();
 		for (Integer value : valuesAllocated) {
 			if (value != null) 
-				return true;
+			return true;
 		}
 		return false;
 	}

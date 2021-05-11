@@ -19,4 +19,8 @@ public class PeerReviewServiceImpl implements PeerReviewService {
 		return this.database.getAllConferences();
 	}
 	
+	public Conference getConference(String acronym) {
+		return this.database.getConference(acronym);
+	}
+	
 }

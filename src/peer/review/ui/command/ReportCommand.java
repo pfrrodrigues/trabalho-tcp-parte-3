@@ -1,7 +1,9 @@
 package peer.review.ui.command;
 
 import java.util.List;
+import java.util.Map;
 
+import peer.review.business.PeerReviewService;
 import peer.review.business.domain.Article;
 import peer.review.business.domain.Conference;
 import peer.review.business.impl.PeerReviewServiceImpl;
@@ -13,63 +15,75 @@ public class ReportCommand extends Command {
 
 	List<Article> acceptedArticles;
 	List<Article> rejectedArticles;
-	private final PeerReviewServiceImpl service; // Must be PeerReviewService
+	private final PeerReviewService service; // Must be PeerReviewService
 	
-	protected ReportCommand(Database database, PeerReviewServiceImpl service) {
+	public ReportCommand(Database database, PeerReviewService service) {
 		super(database);
 		this.service = service;
 	}
 	
-	private void printArticles(List<Article> articles) {
-		// TODO
+	private void printArticles(List<Article> articles, int order) {
+		if (order == 0) {
+			
+		} else if (order == 1) {
+			
+		} else {
+			// DO NOTHING
+		}
 	}
 	
-	private Integer chooseConferenceIndex() {
-		//List<Conference> conferences = this.service.getAllConferences();
+	private String chooseConferenceByAcronym() {
+		Map<String, Conference> conferences = this.service.getAllConferences();
 		System.out.println();
-		Integer indexConference = null;
-		/*
+		String selectedConference = null;
+		
 		do {
-			indexConference = UIUtils.INSTANCE.readInteger("index.conference");
-		} while (indexConference < 0 || indexConference > conferences.size() - 1);
-		*/
-		return indexConference; 
+			selectedConference = UIUtils.INSTANCE.readString("acronym.conference");
+			selectedConference = selectedConference.toUpperCase();
+		} while (!(conferences.containsKey(selectedConference)));
+		
+		System.out.println("Conferência escolhida: " + selectedConference);
+		return selectedConference; 
 	}
 	
 	private void printConferences() {
 		StringBuffer sb = new StringBuffer();
-	/*	List<Conference> conferences = this.service.getAllConferences();
+		Map<String, Conference> conferences = this.service.getAllConferences();
 		
-		sb.append(getTextManager().getText("index")).append("\t\t\t");
-		sb.append(getTextManager().getText("tag")).append("\t\t\t\n");
-		sb.append("--------------------------------------------------\n");
+		sb.append("\n");
+		sb.append(getTextManager().getText("conference")).append("\n");
+		sb.append("----------\n");
 		
-		for (Conference conference : conferences) {
-			sb.append(conferences.indexOf(conference) + "\t\t");
-			sb.append(conference.getAcronym() + "\n"); 
+		for (String acronym : conferences.keySet()) {
+			sb.append(acronym + "\n");
 		}
-		System.out.println(sb); */
-	}
-	
-	private void separateArticles() {
-		// Here, use the conference's reject and accept methods.
-		// To use printArticles()
+		System.out.println(sb);
 	}
 	
 	@Override
 	public void execute() throws Exception {
-		Integer indexOfConference;
+		String selectedConference;
 		
 		printConferences();
 		
 		if (!(this.service.getAllConferences().isEmpty())) {
-			indexOfConference = chooseConferenceIndex();
+			selectedConference = chooseConferenceByAcronym();
 			
-			// if ((this.service.getAllConferences().get(indexOfConference)))
-			// Get conference
-			// If conference is not allocated or needed reviews then
-			// -- System emits an alert else
-			// -- SeparateArticles();
+			// Nesse passo abaixo falta verificar se há reviews pendentes
+		/*	 if (this.service.getConference(selectedConference).isAllocated()) {
+				
+				try {
+					acceptedArticles = this.service.getConference(selectedConference).getAcceptedArticles();
+					rejectedArticles = this.service.getConference(selectedConference).getRejectedArticles();
+				} catch (Exception e) {
+					System.out.println("Há revisões pendentes");
+				} 
+				
+				
+				printArticles(acceptedArticles, 0);
+				printArticles(rejectedArticles, 1);
+			} */
+			
 		}
 		
 	}
