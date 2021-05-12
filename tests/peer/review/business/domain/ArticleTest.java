@@ -1,6 +1,10 @@
 package peer.review.business.domain;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
+
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -104,5 +108,42 @@ public class ArticleTest {
 		});
 
 		Assert.assertEquals("exception.score.notFound", exception.getMessage());
+	}
+
+	@Test
+	public void ShouldGetValidReviewersFromCandidates() {
+		Topic mockedTopic = mock(Topic.class);
+		Researcher mockedAuthor = mock(Researcher.class);
+		Conference mockedConference = mock(Conference.class);
+		Researcher mockedResearcherA = mock(Researcher.class);
+		Researcher mockedResearcherB = mock(Researcher.class);
+		Researcher mockedResearcherC = mock(Researcher.class);
+
+		Article article = spy(new Article(1, "Test Article", mockedAuthor, mockedTopic, mockedConference));
+
+		when(article.isValidReviewer(mockedResearcherA)).thenReturn(false);
+		when(article.isValidReviewer(mockedResearcherB)).thenReturn(true);
+		when(article.isValidReviewer(mockedResearcherC)).thenReturn(false);
+
+		List<Researcher> candidates = List.of(mockedResearcherA, mockedResearcherB, mockedResearcherC);
+
+		List<Researcher> expected = List.of(mockedResearcherB);
+		List<Researcher> actual = article.getValidReviewers(candidates);
+
+		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
+	public void ShouldEquallyCompareSameArticle() {
+		Topic mockedTopic = mock(Topic.class);
+		Researcher mockedAuthor = mock(Researcher.class);
+		Conference mockedConference = mock(Conference.class);
+
+		Article articleA = new Article(1, "Test Article", mockedAuthor, mockedTopic, mockedConference);
+		Article articleB = new Article(1, "Test Article", mockedAuthor, mockedTopic, mockedConference);
+
+		boolean isEqual = articleA.compareTo(articleB) == 0;
+
+		Assert.assertTrue(isEqual);
 	}
 }

@@ -48,7 +48,7 @@ public class Conference {
 	public void allocate() {
 		Collections.sort(articles);
 		for (Article article : articles) {
-			List<Researcher> validReviewers = article.validateReviewers(
+			List<Researcher> validReviewers = article.getValidReviewers(
 						new ArrayList<Researcher>(committeeReviewAllocation.keySet())
 					);
 			Researcher reviewer = getFirstReviewer(validReviewers);

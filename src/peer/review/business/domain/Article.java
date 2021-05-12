@@ -1,10 +1,10 @@
 package peer.review.business.domain;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import peer.review.business.exception.IllegalValueException;
 
@@ -63,14 +63,10 @@ public class Article implements Comparable<Article> {
 		this.addReviewer(reviewer, score);
 	}
 
-	public List<Researcher> validateReviewers(List<Researcher> reviewerCandidates) {
-		List<Researcher> validReviewers = new ArrayList<Researcher>();
-		for (Researcher candidate : reviewerCandidates) {
-			if (this.isValidReviewer(candidate)) {
-				validReviewers.add(candidate);
-			}
-		}
-		return validReviewers;
+	public List<Researcher> getValidReviewers(List<Researcher> reviewerCandidates) {
+		return reviewerCandidates.stream().filter(candidate -> {
+			return this.isValidReviewer(candidate);
+		}).collect(Collectors.toList());
 	}
 
 	public boolean isValidReviewer(Researcher reviewer) {
