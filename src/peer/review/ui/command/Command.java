@@ -2,15 +2,16 @@ package peer.review.ui.command;
 
 import java.util.List;
 
+import peer.review.business.PeerReviewService;
 import peer.review.business.domain.Conference;
-import peer.review.data.Database;
 import peer.review.ui.TextManager;
 import peer.review.ui.UIUtils;
 
 public abstract class Command {
-	
-	protected Command(Database database) {
-		// TODO
+	protected final PeerReviewService service;
+
+	protected Command(PeerReviewService service) {
+		this.service = service;
 	}
 	
 	public void printConferences(List<Conference> conferences) {

@@ -4,11 +4,9 @@ import peer.review.business.PeerReviewService;
 import peer.review.data.Database;
 
 public class ScoreAttributionCommand extends Command {
-	private final PeerReviewService service;
 	
-	public ScoreAttributionCommand(Database database, PeerReviewService service) {
-		super(database);
-		this.service = service;
+	public ScoreAttributionCommand(PeerReviewService service) {
+		super(service);
 	}
 
 	@Override

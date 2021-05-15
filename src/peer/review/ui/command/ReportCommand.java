@@ -15,11 +15,9 @@ public class ReportCommand extends Command {
 
 	List<Article> acceptedArticles;
 	List<Article> rejectedArticles;
-	private final PeerReviewService service;
 	
-	public ReportCommand(Database database, PeerReviewService service) {
-		super(database);
-		this.service = service;
+	public ReportCommand(PeerReviewService service) {
+		super(service);
 	}
 	
 	private void printArticlesReport(List<Article> acceptedArticles, List<Article> rejectedArticles) {
