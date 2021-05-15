@@ -7,7 +7,6 @@ import java.util.Map;
 import peer.review.business.PeerReviewService;
 import peer.review.business.domain.Article;
 import peer.review.business.domain.Conference;
-import peer.review.data.Database;
 import peer.review.ui.UIUtils;
 
 
@@ -75,7 +74,7 @@ public class ReportCommand extends Command {
 					rejectedArticles = this.service.getConference(selectedConference).getRejectedArticles();
 					printArticlesReport(acceptedArticles, rejectedArticles);
 				} catch (Exception e) {
-					System.out.println("Há revisões pendentes");
+					System.out.println("Hï¿½ revisï¿½es pendentes");
 				}
 				
 			}
