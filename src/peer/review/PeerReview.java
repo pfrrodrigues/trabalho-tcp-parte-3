@@ -1,10 +1,6 @@
 package peer.review;
 
-import peer.review.business.PeerReviewService;
-import peer.review.business.impl.PeerReviewServiceImpl;
-import peer.review.data.Database;
 import peer.review.ui.PeerReviewUI;
-import peer.review.ui.command.ReportCommand;
 
 public abstract class PeerReview {
 

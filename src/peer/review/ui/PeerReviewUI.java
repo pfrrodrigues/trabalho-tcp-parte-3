@@ -1,8 +1,6 @@
 package peer.review.ui;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import peer.review.PeerReview;
@@ -32,9 +30,9 @@ public class PeerReviewUI extends PeerReview {
 		UIUtils uiUtils = UIUtils.INSTANCE;
 		String commandKey = null;
 		
-		//this.actions.put("A", new AllocationCommand(database, peerReview));
-		this.actions.put("R", new ReportCommand(database, peerReview));
-		this.actions.put("S", new ScoreAttributionCommand(database, peerReview));
+		this.actions.put("A", new AllocationCommand(peerReview));
+		this.actions.put("R", new ReportCommand(peerReview));
+		this.actions.put("S", new ScoreAttributionCommand(peerReview));
 		
 		do {
 			System.out.println();
