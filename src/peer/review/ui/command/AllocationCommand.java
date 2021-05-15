@@ -10,6 +10,8 @@ import peer.review.business.exception.IllegalValueException;
 import peer.review.ui.UIUtils;
 
 public class AllocationCommand extends Command {
+	private static final int MIN_NECESSARY_REVIEWS = 2;
+	private static final int MAX_NECESSARY_REVIEWS = 5;
 	
 	public AllocationCommand(PeerReviewService service) {
 		super(service);
@@ -21,7 +23,7 @@ public class AllocationCommand extends Command {
 		
 		Integer conferenceIndex = UIUtils.INSTANCE.readInteger("conference.select");
 		Integer reviewerNumber = UIUtils.INSTANCE.readInteger("reviewer.number");
-		if (reviewerNumber < 2 || reviewerNumber > 5) 
+		if (reviewerNumber < MIN_NECESSARY_REVIEWS || reviewerNumber > MAX_NECESSARY_REVIEWS) 
 			throw new IllegalValueException(getTextManager().getText("message.reviewer.number.invalid"));
 		
 		try {
