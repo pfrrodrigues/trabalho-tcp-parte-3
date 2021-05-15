@@ -40,7 +40,7 @@ public class ReportCommand extends Command {
 		rejectedArticlesList.append("------------\n");
 		
 		for (Article article : rejectedArticles) {
-			acceptedArticlesList.append(article.getTitle() + "\n");
+			rejectedArticlesList.append(article.getTitle() + "\n");
 		}
 	
 		System.out.println(acceptedArticlesList + "\n");

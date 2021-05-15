@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import peer.review.business.PeerReviewService;
+import peer.review.business.domain.Article;
 import peer.review.business.domain.Conference;
 import peer.review.data.Database;
 
@@ -23,4 +24,7 @@ public class PeerReviewServiceImpl implements PeerReviewService {
 		return this.database.getConference(acronym);
 	}
 	
+	public Map<Integer, Article> getAllArticles() {
+		return this.database.getAllArticles();
+	}
 }
