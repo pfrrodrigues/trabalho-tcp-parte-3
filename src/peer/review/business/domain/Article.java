@@ -35,6 +35,10 @@ public class Article implements Comparable<Article> {
 	public Map<Researcher, Integer> getReviews() {
 		return reviews;
 	}
+	
+	public List<Researcher> getReviewers() {
+		return new ArrayList<>(this.reviews.keySet());
+	}
 
 	public Conference getConference() {
 		return this.conference;
