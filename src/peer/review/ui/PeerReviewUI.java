@@ -34,7 +34,7 @@ public class PeerReviewUI extends PeerReview {
 		
 		//this.actions.put("A", new AllocationCommand(database, peerReview));
 		this.actions.put("R", new ReportCommand(database, peerReview));
-		//this.actions.put("S", new ScoreAttributionCommand(database, peerReview));
+		this.actions.put("S", new ScoreAttributionCommand(database, peerReview));
 		
 		do {
 			System.out.println();
@@ -42,15 +42,7 @@ public class PeerReviewUI extends PeerReview {
 			commandKey = uiUtils.readString(null);
 			Command command = (Command) actions.get(commandKey);
 			if (command != null) {
-				//try {
-				//command.execute();
-				//} catch (BusinessException be) {
-				//	System.out.println(uiUtils.getTextManager().getText(
-				//			be.getMessage(), be.getArgs()));
-				//	log.warn(be);
-				//} catch (Exception e) {
-				//	uiUtils.handleUnexceptedError(e);
-				//}
+				command.execute();
 			}
 		} while (!EXIT_CODE.equals(commandKey));
 	}

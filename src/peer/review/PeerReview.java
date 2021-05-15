@@ -13,8 +13,6 @@ public abstract class PeerReview {
 		PeerReview peerReviewUI = new PeerReviewUI();
 		peerReviewUI.showInterface();
 	}
-
-	public PeerReview() {}
 	
 	public abstract void showInterface() throws Exception;
 }

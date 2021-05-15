@@ -74,7 +74,7 @@ public class Conference {
 	}
 
 	public boolean isAllocated() {
-		List<Integer> valuesAllocated = (ArrayList<Integer>) this.committeeReviewAllocation.values();
+		List<Integer> valuesAllocated = new ArrayList<>(this.committeeReviewAllocation.values());
 		for (Integer value : valuesAllocated) {
 			if (value != null) 
 			return true;
