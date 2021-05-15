@@ -1,5 +1,6 @@
 package peer.review.business.domain;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +36,10 @@ public class Article implements Comparable<Article> {
 
 	public Map<Researcher, Integer> getReviews() {
 		return reviews;
+	}
+	
+	public List<Researcher> getReviewers() {
+		return new ArrayList<>(this.reviews.keySet());
 	}
 
 	public Integer getReviewScore(Researcher reviewer) {
