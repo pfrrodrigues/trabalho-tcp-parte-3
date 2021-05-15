@@ -43,7 +43,7 @@ public class AllocationCommand extends Command {
 		for (Article article : conference.getArticles()) {
 			for (Researcher reviewer : article.getReviewers()) {
 				sb.append(getTextManager().getText("article")).append(" id ");
-				sb.append(article.getId()).append(" ");
+				sb.append(article.getId()).append("\t");
 				sb.append(getTextManager().getText("message.allocatedTo")).append(" ");
 				sb.append(getTextManager().getText("reviewer")).append(" id ");
 				sb.append(reviewer.getId()).append("\n");

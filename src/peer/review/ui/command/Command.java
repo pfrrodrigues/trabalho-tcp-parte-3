@@ -22,7 +22,8 @@ public abstract class Command {
 		sb.append("----------\n");
 		
 		for (Conference  conference : conferences) {
-			sb.append(conference.getAcronym() + "\n");
+			sb.append(conferences.indexOf(conference) +  " - "
+					+  conference.getAcronym() + "\n");
 		}
 		System.out.println(sb);
 	}
