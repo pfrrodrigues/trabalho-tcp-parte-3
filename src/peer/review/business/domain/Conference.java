@@ -2,7 +2,6 @@ package peer.review.business.domain;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,10 +74,10 @@ public class Conference {
 	}
 
 	public boolean isAllocated() {
-		Collection<Integer> valuesAllocated = this.committeeReviewAllocation.values();
+		List<Integer> valuesAllocated = new ArrayList<>(this.committeeReviewAllocation.values());
 		for (Integer value : valuesAllocated) {
 			if (value != null) 
-				return true;
+			return true;
 		}
 		return false;
 	}

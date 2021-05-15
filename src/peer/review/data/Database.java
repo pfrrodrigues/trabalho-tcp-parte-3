@@ -79,10 +79,10 @@ public class Database {
 
         // Conferences
         Conference icse = new Conference("ICSE", new ArrayList<>(
-            List.of(joao, ana, manoel, joana, miguel, beatriz)));
+            List.of(joao, ana, manoel, joana, miguel, beatriz, suzana)));
         save(icse);
         Conference fse = new Conference("FSE", new ArrayList<>(
-            List.of(joao, ana, manoel, joana, miguel, beatriz)));
+            List.of(joao, ana, manoel, joana, miguel, beatriz, suzana)));
         save(fse);
         Conference sbes = new Conference("SBES", new ArrayList<>(
             List.of(joana, miguel, beatriz, suzana, natasha, pedro, carlos)));
@@ -130,7 +130,7 @@ public class Database {
         a1.getConference().allocateReview(a1, carlos);
         
         a2.getConference().allocateReview(a2, suzana);
-        a2.updateReview(suzana, 2);
+       	a2.updateReview(suzana, 2);
         a2.getConference().allocateReview(a2, ana);
         a2.updateReview(ana, 3);
 

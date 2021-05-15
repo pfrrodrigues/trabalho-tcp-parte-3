@@ -9,5 +9,6 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Mockito"/>
+	<classpathentry kind="lib" path="/trabalho-tcp-parte-1/libs/commons-logging-1.0.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
