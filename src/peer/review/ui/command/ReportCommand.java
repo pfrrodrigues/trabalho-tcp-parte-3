@@ -7,7 +7,6 @@ import java.util.Map;
 import peer.review.business.PeerReviewService;
 import peer.review.business.domain.Article;
 import peer.review.business.domain.Conference;
-import peer.review.data.Database;
 import peer.review.ui.UIUtils;
 
 
@@ -15,11 +14,9 @@ public class ReportCommand extends Command {
 
 	List<Article> acceptedArticles;
 	List<Article> rejectedArticles;
-	private final PeerReviewService service;
 	
-	public ReportCommand(Database database, PeerReviewService service) {
-		super(database);
-		this.service = service;
+	public ReportCommand(PeerReviewService service) {
+		super(service);
 	}
 	
 	private void printArticlesReport(List<Article> acceptedArticles, List<Article> rejectedArticles) {
@@ -47,39 +44,40 @@ public class ReportCommand extends Command {
 		System.out.println(rejectedArticlesList + "\n");
 	}
 	
-	private String chooseConferenceByAcronym() {
-		Map<String, Conference> conferences = this.service.getAllConferences();
-		String selectedConference = null;
+	private int chooseConferenceByIndex(List<Conference> listOfConferences) {
+		
+		int selectedConference;
 		
 		System.out.println();
 		do {
-			selectedConference = UIUtils.INSTANCE.readString("acronym.conference");
-			selectedConference = selectedConference.toUpperCase();
-		} while (!(conferences.containsKey(selectedConference)));
+			selectedConference = UIUtils.INSTANCE.readInteger("conference.select");
+		} while (selectedConference < 0 || selectedConference > listOfConferences.size() - 1);
 		
 		return selectedConference; 
 	}
 	
 	@Override
 	public void execute() throws Exception {
-		String selectedConference;
+		int selectedConference;
 		Map<String, Conference> conferences = this.service.getAllConferences();
 		List<Conference> listOfConferences = new ArrayList<>(conferences.values());
 		
 		printConferences(listOfConferences);
 		
 		if (!(conferences.isEmpty())) {
-			selectedConference = chooseConferenceByAcronym();
+			selectedConference = chooseConferenceByIndex(listOfConferences);
 			
-			if (this.service.getConference(selectedConference).isAllocated()) {
+			if (this.service.getConference(listOfConferences.get(selectedConference).getAcronym()).isAllocated()) {
 				try {
-					acceptedArticles = this.service.getConference(selectedConference).getAcceptedArticles();
-					rejectedArticles = this.service.getConference(selectedConference).getRejectedArticles();
+					acceptedArticles = this.service.getConference(listOfConferences.get(selectedConference).getAcronym()).getAcceptedArticles();
+					rejectedArticles = this.service.getConference(listOfConferences.get(selectedConference).getAcronym()).getRejectedArticles();
 					printArticlesReport(acceptedArticles, rejectedArticles);
 				} catch (Exception e) {
 					System.out.println("Há revisões pendentes");
 				}
 				
+			} else {
+				System.out.println("Ainda não foi realizada a alocação de artigos para esta conferência.");
 			}
 			
 		}

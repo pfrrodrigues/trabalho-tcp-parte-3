@@ -1,19 +1,21 @@
 package peer.review.ui.command;
 
+import java.util.List;
 import java.util.Map;
 
 import peer.review.business.PeerReviewService;
 import peer.review.business.domain.Article;
 import peer.review.business.domain.Researcher;
-import peer.review.data.Database;
 import peer.review.ui.UIUtils;
 
 public class ScoreAttributionCommand extends Command {
-	private final PeerReviewService service;
 	
-	public ScoreAttributionCommand(Database database, PeerReviewService service) {
-		super(database);
-		this.service = service;
+	public ScoreAttributionCommand(PeerReviewService service) {
+		super(service);
+	}
+	
+	private boolean thereAreArticles(Map<Integer, Article> articles) {
+		return !(articles.isEmpty());
 	}
 	
 	private void printArticles(Map<Integer, Article> articles) {
@@ -32,32 +34,45 @@ public class ScoreAttributionCommand extends Command {
 	}
 	
 	private int chooseArticleById(Map<Integer, Article> articles) {
-		int selectedArticle = 0;
+		int selectedArticleId;
 		
-		System.out.println();
 		do {
-			selectedArticle = UIUtils.INSTANCE.readInteger("message.choose.article");
-		} while (!(articles.containsKey(selectedArticle)));
+			selectedArticleId = UIUtils.INSTANCE.readInteger("message.choose.article");
+		} while (!(articles.containsKey(selectedArticleId)));
 		
-		return selectedArticle; 
+		return selectedArticleId; 
 	}
 	
-	private void printReviewers(Map<Integer, Article> articles, int selectedArticleId) {
-		Map<Researcher, Integer> reviews = articles.get(selectedArticleId).getReviews();
+	private void printReviewersOfArticle(Article article) {
+		List<Researcher> reviewers = article.getReviewers();
 		StringBuffer sb = new StringBuffer();
 		
-		sb.append("\n");
-		sb.append("Artigo: " + articles.get(selectedArticleId).getTitle() +"\n");
-		sb.append(getTextManager().getText("id")).append("\t");
-		sb.append(getTextManager().getText("reviewers")).append("\n");
-		sb.append("--------------------------------------\n");
-		
-		for (Researcher researcher : reviews.keySet()) {
-			sb.append(researcher.getId() + "\t");
-			sb.append(researcher.getName() + "\n");
+		if (article.getConference().isAllocated()) {
+			sb.append("\n").append(getTextManager().getText("article")).append(article.getTitle())
+			.append("\n");
+		//	sb.append("Artigo: " + article.getTitle() +"\n");
+			sb.append(getTextManager().getText("id")).append("\t");
+			sb.append(getTextManager().getText("reviewer")).append("\n");
+			sb.append("--------------------------------------\n");
+			
+			for (Researcher reviewer : reviewers) {
+				sb.append(reviewer.getId() + "\t");
+				sb.append(reviewer.getName() + "\n");
+			}
+			System.out.println(sb);
+		} else {
+			sb.append("\n").append(getTextManager().getText("message.thereIsNotAllocatedReviewers"))
+			  .append("\n");
+			System.out.println(sb);
 		}
-		System.out.println(sb);
 	}
+	
+	
+	
+	
+	
+	
+	
 	
 	private int chooseReviewerById(Map<Researcher, Integer> researchers) {
 		int selectedReviewerId = 0;
@@ -86,21 +101,24 @@ public class ScoreAttributionCommand extends Command {
 		return score;
 	}
 	
+	
 	@Override
 	public void execute() throws Exception {
 		Map<Integer, Article> articles = this.service.getAllArticles();
-		int selectedArticleId;
-		int score;
-		int selectedReviewerId;
+		int selectedReviewerId, score;
+		
 		Researcher selectedReviewer = null;
 		
-		if (!(articles.isEmpty())) {
+		if (thereAreArticles(articles)) {
 			printArticles(articles);
 			
-			selectedArticleId = chooseArticleById(articles);
+			int selectedArticleId = chooseArticleById(articles);
 			
-			printReviewers(articles, selectedArticleId);
+			// ou aqui
+			printReviewersOfArticle(articles.get(selectedArticleId));
+			//printReviewers(articles, selectedArticleId);
 			
+			// arrumar aqui caso a lista devolvida seja vazia
 			selectedReviewerId = chooseReviewerById(articles.get(selectedArticleId).getReviews());
 			
 			score = scoreAttribution();

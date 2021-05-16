@@ -1,5 +1,6 @@
 package peer.review.business;
 
+import java.util.List;
 import java.util.Map;
 
 import peer.review.business.domain.Article;
@@ -12,4 +13,6 @@ public interface PeerReviewService {
 	public Conference getConference(String acronym);
 	
 	public Map<Integer, Article> getAllArticles();
+
+	public List<Conference> getUnallocatedConferences();
 }

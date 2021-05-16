@@ -2,6 +2,7 @@ package peer.review.business.impl;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import peer.review.business.PeerReviewService;
 import peer.review.business.domain.Article;
@@ -27,4 +28,12 @@ public class PeerReviewServiceImpl implements PeerReviewService {
 	public Map<Integer, Article> getAllArticles() {
 		return this.database.getAllArticles();
 	}
+	public List<Conference> getUnallocatedConferences() {
+		Map<String, Conference> allConferences = this.database.getAllConferences();
+		
+		return allConferences.values().stream().filter(conference -> {
+		 	return !conference.isAllocated();
+		}).collect(Collectors.toList());
+	}
+	
 }
