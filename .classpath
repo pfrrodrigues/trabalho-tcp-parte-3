@@ -12,5 +12,6 @@
 	<classpathentry kind="lib" path="libs/commons-logging-1.0.4.jar"/>
 	<classpathentry kind="lib" path="libs/log4j-1.2.15.jar"/>
 	<classpathentry kind="lib" path="libs/mockito-all-2.0.2-beta.jar"/>
+	<classpathentry kind="lib" path="/trabalho-tcp-parte-1/libs/commons-logging-1.0.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
