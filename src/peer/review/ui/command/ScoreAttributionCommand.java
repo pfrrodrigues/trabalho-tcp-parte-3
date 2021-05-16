@@ -43,52 +43,35 @@ public class ScoreAttributionCommand extends Command {
 		return selectedArticleId; 
 	}
 	
+	private boolean thereAreReviewersAllocated(Article article) {
+		return article.getConference().isAllocated();
+	}
+	
 	private void printReviewersOfArticle(Article article) {
 		List<Researcher> reviewers = article.getReviewers();
 		StringBuffer sb = new StringBuffer();
 		
-		if (article.getConference().isAllocated()) {
-			sb.append("\n").append(getTextManager().getText("article")).append(article.getTitle())
-			.append("\n");
-		//	sb.append("Artigo: " + article.getTitle() +"\n");
-			sb.append(getTextManager().getText("id")).append("\t");
-			sb.append(getTextManager().getText("reviewer")).append("\n");
-			sb.append("--------------------------------------\n");
+		sb.append("\n").append(getTextManager().getText("article")).append(": ")
+		.append(article.getTitle()).append("\n");
+		sb.append(getTextManager().getText("id")).append("\t");
+		sb.append(getTextManager().getText("reviewer")).append("\n");
+		sb.append("---------------------------------\n");
 			
-			for (Researcher reviewer : reviewers) {
-				sb.append(reviewer.getId() + "\t");
-				sb.append(reviewer.getName() + "\n");
-			}
-			System.out.println(sb);
-		} else {
-			sb.append("\n").append(getTextManager().getText("message.thereIsNotAllocatedReviewers"))
-			  .append("\n");
-			System.out.println(sb);
+		for (Researcher reviewer : reviewers) {
+			sb.append(reviewer.getId() + "\t");
+			sb.append(reviewer.getName() + "\n");
 		}
+		System.out.println(sb);
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	private int chooseReviewerById(Map<Researcher, Integer> researchers) {
-		int selectedReviewerId = 0;
-		boolean PASS = false;
+	private int chooseReviewerById(List<Researcher> reviewers) {
+		int selectedReviewerId;
 		
 		System.out.println();
 		do {
 			selectedReviewerId = UIUtils.INSTANCE.readInteger("message.choose.reviewer");
 			
-			for (Researcher researcher: researchers.keySet()) {
-				if (researcher.getId() == selectedReviewerId) {
-					PASS = true;
-				}
-			}
-		} while (!PASS);
-		
+		} while (!(reviewers.contains(this.service.getResearcherById(selectedReviewerId))));
 		return selectedReviewerId; 
 	}
 	
@@ -101,36 +84,32 @@ public class ScoreAttributionCommand extends Command {
 		return score;
 	}
 	
-	
 	@Override
 	public void execute() throws Exception {
+		StringBuffer sb = new StringBuffer();
 		Map<Integer, Article> articles = this.service.getAllArticles();
-		int selectedReviewerId, score;
-		
-		Researcher selectedReviewer = null;
+		int score;
 		
 		if (thereAreArticles(articles)) {
 			printArticles(articles);
 			
-			int selectedArticleId = chooseArticleById(articles);
+			Article selectedArticle = articles.get(chooseArticleById(articles));
 			
-			// ou aqui
-			printReviewersOfArticle(articles.get(selectedArticleId));
-			//printReviewers(articles, selectedArticleId);
-			
-			// arrumar aqui caso a lista devolvida seja vazia
-			selectedReviewerId = chooseReviewerById(articles.get(selectedArticleId).getReviews());
-			
-			score = scoreAttribution();
-			
-			for (Researcher researcher: articles.get(selectedArticleId).getReviews().keySet()) {
-				if (researcher.getId() == selectedReviewerId) {
-					selectedReviewer = researcher;
-				}
+			if (thereAreReviewersAllocated(selectedArticle)) {
+				printReviewersOfArticle(selectedArticle);
+				
+				Researcher selectedReviewer = this.service.getResearcherById(chooseReviewerById(selectedArticle.getReviewers()));
+				score = scoreAttribution();
+				
+				selectedArticle.updateReview(selectedReviewer, score);
+				sb.append(getTextManager().getText("message.sucessInScoreAttribution"));
+				System.out.println(sb);
+			} else {
+				sb.append("\n").append(getTextManager().getText("message.thereIsNotAllocatedReviewers"))
+				  .append("\n");
+				System.out.println(sb);
 			}
-			
-			articles.get(selectedArticleId).updateReview(selectedReviewer, score);
-			System.out.println("Revisão realizada com sucesso.");
+
 		}
 		
 	}

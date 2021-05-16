@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import peer.review.business.PeerReviewService;
 import peer.review.business.domain.Article;
 import peer.review.business.domain.Conference;
+import peer.review.business.domain.Researcher;
 import peer.review.data.Database;
 
 public class PeerReviewServiceImpl implements PeerReviewService {
@@ -21,10 +22,6 @@ public class PeerReviewServiceImpl implements PeerReviewService {
 		return this.database.getAllConferences();
 	}
 	
-	public Conference getConference(String acronym) {
-		return this.database.getConference(acronym);
-	}
-	
 	public Map<Integer, Article> getAllArticles() {
 		return this.database.getAllArticles();
 	}
@@ -35,5 +32,9 @@ public class PeerReviewServiceImpl implements PeerReviewService {
 		 	return !conference.isAllocated();
 		}).collect(Collectors.toList());
 	}
+	
+	public Researcher getResearcherById(int key) {
+    	return this.database.getResearcher(key);
+    }
 	
 }
