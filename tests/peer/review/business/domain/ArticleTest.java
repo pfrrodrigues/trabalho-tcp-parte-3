@@ -2,9 +2,14 @@ package peer.review.business.domain;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -85,11 +90,9 @@ public class ArticleTest {
 
 		Article article = new Article(1, "Test Article", mockedAuthor, mockedTopic, mockedConference);
 
-		NullPointerException exception = Assert.assertThrows(NullPointerException.class, () -> {
+		Assert.assertThrows("exception.reviews.empty", NullPointerException.class, () -> {
 			article.accepted();
 		});
-
-		Assert.assertEquals("exception.reviews.empty", exception.getMessage());
 	}
 
 	@Test
@@ -103,11 +106,9 @@ public class ArticleTest {
 
 		article.addReviewer(mockedResearcher);
 
-		NullPointerException exception = Assert.assertThrows(NullPointerException.class, () -> {
+		Assert.assertThrows("exception.score.notFound", NullPointerException.class, () -> {
 			article.accepted();
 		});
-
-		Assert.assertEquals("exception.score.notFound", exception.getMessage());
 	}
 
 	@Test
@@ -134,16 +135,72 @@ public class ArticleTest {
 	}
 
 	@Test
-	public void ShouldEquallyCompareSameArticle() {
+	public void ShouldGetAverageScoreFromArticle() {
+		Topic mockedTopic = mock(Topic.class);
+		Researcher mockedAuthor = mock(Researcher.class);
+		Conference mockedConference = mock(Conference.class);
+		Researcher mockedResearcherA = mock(Researcher.class);
+		Researcher mockedResearcherB = mock(Researcher.class);
+		Researcher mockedResearcherC = mock(Researcher.class);
+
+		Article article = spy(new Article(1, "Test Article", mockedAuthor, mockedTopic, mockedConference));
+
+		Map<Researcher, Integer> reviews = new HashMap<Researcher, Integer>();
+
+		reviews.put(mockedResearcherA, 3);
+		reviews.put(mockedResearcherB, 0);
+		reviews.put(mockedResearcherC, 3);
+
+		when(article.getReviews()).thenReturn(reviews);
+
+		Double expected = 2d;
+		Double actual = article.averageScore();
+
+		Assert.assertEquals(expected, actual);
+
+		verify(article, times(2)).getReviews();
+	}
+
+	@Test
+	public void ShouldThrowExceptionWhenTryToGetAverageScoreFromArticleWithNoReviews() {
 		Topic mockedTopic = mock(Topic.class);
 		Researcher mockedAuthor = mock(Researcher.class);
 		Conference mockedConference = mock(Conference.class);
 
-		Article articleA = new Article(1, "Test Article", mockedAuthor, mockedTopic, mockedConference);
-		Article articleB = new Article(1, "Test Article", mockedAuthor, mockedTopic, mockedConference);
+		Article article = spy(new Article(1, "Test Article", mockedAuthor, mockedTopic, mockedConference));
 
-		boolean isEqual = articleA.compareTo(articleB) == 0;
+		when(article.getReviews()).thenReturn(Collections.emptyMap());
 
-		Assert.assertTrue(isEqual);
+		Assert.assertThrows("exception.reviews.empty", NullPointerException.class, () -> {
+			article.averageScore();
+		});
+
+		verify(article, times(1)).getReviews();
+	}
+
+	@Test
+	public void ShouldThrowExceptionWhenTryToGetAverageScoreFromArticleWithSomeInvalidReview() {
+		Topic mockedTopic = mock(Topic.class);
+		Researcher mockedAuthor = mock(Researcher.class);
+		Conference mockedConference = mock(Conference.class);
+		Researcher mockedResearcherA = mock(Researcher.class);
+		Researcher mockedResearcherB = mock(Researcher.class);
+		Researcher mockedResearcherC = mock(Researcher.class);
+
+		Article article = spy(new Article(1, "Test Article", mockedAuthor, mockedTopic, mockedConference));
+
+		Map<Researcher, Integer> reviews = new HashMap<Researcher, Integer>();
+
+		reviews.put(mockedResearcherA, 1);
+		reviews.put(mockedResearcherB, null);
+		reviews.put(mockedResearcherC, 3);
+
+		when(article.getReviews()).thenReturn(reviews);
+
+		Assert.assertThrows("exception.score.notFound", NullPointerException.class, () -> {
+			article.averageScore();
+		});
+
+		verify(article, times(2)).getReviews();
 	}
 }
