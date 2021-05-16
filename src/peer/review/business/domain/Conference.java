@@ -2,6 +2,7 @@ package peer.review.business.domain;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +47,7 @@ public class Conference {
 	}
 	
 	public void allocate() {
-		Collections.sort(articles);
+		articles = this.sortArticlesById(this.articles);
 		for (Article article : articles) {
 			List<Researcher> validReviewers = article.getValidReviewers(
 						new ArrayList<Researcher>(committeeReviewAllocation.keySet())
@@ -89,7 +90,8 @@ public class Conference {
 				acceptedArticles.add(article);
 			}
 		}
-		return acceptedArticles;
+		boolean reversedOrder = true;
+		return sortArticlesByAverage(acceptedArticles, reversedOrder);
 	}
 	
 	public List<Article> getRejectedArticles() throws NullPointerException {
@@ -99,6 +101,26 @@ public class Conference {
 				rejectedArticles.add(article);
 			}
 		}
-		return rejectedArticles;
+		return sortArticlesByAverage(rejectedArticles);
+	}
+
+	private List<Article> sortArticlesById(List<Article> articles) {
+		Comparator<Article> compareById = (Article a1, Article a2) -> a1.getId().compareTo(a2.getId());
+		Collections.sort(articles, compareById);
+		return articles;
+	}
+
+	private List<Article> sortArticlesByAverage(List<Article> articles, boolean reversedOrder) {
+		Comparator<Article> compareByAverage = (Article a1, Article a2) -> a1.averageScore().compareTo(a2.averageScore());
+		if (reversedOrder) {
+			Collections.sort(articles, compareByAverage.reversed());
+		} else {
+			Collections.sort(articles, compareByAverage);
+		}
+		return articles;
+	}
+
+	private List<Article> sortArticlesByAverage(List<Article> articles) {
+		return sortArticlesByAverage(articles, false);
 	}
 }
