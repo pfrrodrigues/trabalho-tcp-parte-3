@@ -18,11 +18,24 @@ public class ReportCommand extends Command {
 		super(service);
 	}
 
+	private boolean thereAreConferences(List<Conference> conferences) {
+		return !(conferences.isEmpty());
+	}
+
+	private int chooseConferenceByIndex(List<Conference> listOfConferences) {
+		int selectedConference;
+
+		System.out.println();
+		do {
+			selectedConference = UIUtils.INSTANCE.readInteger("conference.select");
+		} while (selectedConference < 0 || selectedConference > listOfConferences.size() - 1);
+		return selectedConference;
+	}
+
 	private void printArticlesReport(List<Article> acceptedArticles, List<Article> rejectedArticles) {
 		StringBuffer acceptedArticlesList = new StringBuffer();
 		StringBuffer rejectedArticlesList = new StringBuffer();
 
-		// falta ordernar as listas
 		acceptedArticlesList.append("\n");
 		acceptedArticlesList.append(getTextManager().getText("header.articles.accepted")).append("\n");
 		acceptedArticlesList.append("------------\n");
@@ -36,46 +49,38 @@ public class ReportCommand extends Command {
 		rejectedArticlesList.append("------------\n");
 
 		for (Article article : rejectedArticles) {
-			acceptedArticlesList.append(article.getTitle() + "\n");
+			rejectedArticlesList.append(article.getTitle() + "\n");
 		}
 
-		System.out.println(acceptedArticlesList + "\n");
+		System.out.println(acceptedArticlesList);
 		System.out.println(rejectedArticlesList + "\n");
-	}
-
-	private String chooseConferenceByAcronym() {
-		Map<String, Conference> conferences = this.service.getAllConferences();
-		String selectedConference = null;
-
-		System.out.println();
-		do {
-			selectedConference = UIUtils.INSTANCE.readString("acronym.conference");
-			selectedConference = selectedConference.toUpperCase();
-		} while (!(conferences.containsKey(selectedConference)));
-
-		return selectedConference;
 	}
 
 	@Override
 	public void execute() throws Exception {
-		String selectedConference;
+
 		Map<String, Conference> conferences = this.service.getAllConferences();
 		List<Conference> listOfConferences = new ArrayList<>(conferences.values());
+		StringBuffer sb = new StringBuffer();
 
 		printConferences(listOfConferences);
 
-		if (!(conferences.isEmpty())) {
-			selectedConference = chooseConferenceByAcronym();
+		if (thereAreConferences(listOfConferences)) {
+			Conference selectedConference = listOfConferences.get(chooseConferenceByIndex(listOfConferences));
 
-			if (this.service.getConference(selectedConference).isAllocated()) {
+			if (selectedConference.isAllocated()) {
 				try {
-					acceptedArticles = this.service.getConference(selectedConference).getAcceptedArticles();
-					rejectedArticles = this.service.getConference(selectedConference).getRejectedArticles();
+					acceptedArticles = selectedConference.getAcceptedArticles();
+					rejectedArticles = selectedConference.getRejectedArticles();
 					printArticlesReport(acceptedArticles, rejectedArticles);
 				} catch (Exception e) {
-					System.out.println("Há revisões pendentes");
+					sb.append(getTextManager().getText("message.thereArePendingReviews"));
+					System.out.println(sb);
 				}
 
+			} else {
+				sb.append(getTextManager().getText("message.conference.notAllocated"));
+				System.out.println(sb);
 			}
 
 		}

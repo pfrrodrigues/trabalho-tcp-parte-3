@@ -40,7 +40,11 @@ public class PeerReviewUI extends PeerReview {
 			commandKey = uiUtils.readString(null);
 			Command command = (Command) actions.get(commandKey);
 			if (command != null) {
-				command.execute();
+				try {
+					command.execute();					
+				} catch (IllegalArgumentException iae) {
+					System.out.println(iae.getMessage());
+				}
 			}
 		} while (!EXIT_CODE.equals(commandKey));
 	}

@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 import peer.review.business.exception.IllegalValueException;
 
-public class Article implements Comparable<Article> {
+public class Article {
 	private Integer id;
 	private String title;
 	private Researcher author;
@@ -84,30 +84,21 @@ public class Article implements Comparable<Article> {
 	}
 
 	public boolean accepted() throws NullPointerException {
+		return this.averageScore() >= 0;
+	}
+
+	public Double averageScore() throws NullPointerException {
 		if (this.getReviews().isEmpty()) {
 			throw new NullPointerException("exception.reviews.empty");
 		}
-
+		Double sum = 0.0;
 		Collection<Integer> scores = this.getReviews().values();
-
-		int sum = 0;
-		float average;
-
 		for (Integer score : scores) {
 			if (score == null) {
 				throw new NullPointerException("exception.score.notFound");
 			}
-
 			sum += score;
 		}
-
-		average = sum / scores.size();
-
-		return average >= 0;
-	}
-
-	@Override
-	public int compareTo(Article article) {
-		return this.getId().compareTo(article.getId());
+		return sum / scores.size();
 	}
 }

@@ -19,6 +19,9 @@ public class AllocationCommand extends Command {
 	
 	public void execute() {
 		List<Conference> unallocatedConferences = this.service.getUnallocatedConferences();
+		if (unallocatedConferences.isEmpty()) 
+			throw new IllegalArgumentException(getTextManager().getText("exception.unallocated.empty"));
+		
 		this.printConferences(unallocatedConferences);
 		
 		Integer conferenceIndex = UIUtils.INSTANCE.readInteger("conference.select");

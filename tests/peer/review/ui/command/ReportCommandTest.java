@@ -1,6 +1,5 @@
 package peer.review.ui.command;
 
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
@@ -34,7 +33,6 @@ class ReportCommandTest {
 		command.execute();
 
 		verify(command, times(1)).printConferences(listOfConferences);
-		verify(mockedService, times(0)).getConference(anyString());
 	}
 
 }
